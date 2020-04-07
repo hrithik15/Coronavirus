@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <style>
+    div.scroll{
+      height: 600px;
+      overflow-y: scroll;
+    }
+  </style>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" 
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" 
+    crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" 
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" 
+    crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" 
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" 
+crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js" integrity="sha256-R4pqcOYV8lt7snxMQO/HSbVCFRPMdrhAFMH+vr9giYI=" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body >
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <a class="navbar-brand" href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019"><img src="co.jpg" height="40px" alt=""></a>
+      
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+          <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item active">
+              <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+              <a class="nav-link" href="https://www.who.int/emergencies/diseases/novel-coronavirus-2019" target=""> Helpful Links</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"></a>
+            </li>
+          </ul>
+          
+        </div>
+      </nav>
+      <br>
+      <br>
+      
+      <div class="container" class="bg-dark">
+        <div class="row" class="bg-dark">
+          <h3>Coronavirus(COVID-19) Map</h3>
+          {{ my_map|safe }}
+        </div>
+      </div>
+      <br><br><br>
+    
+       <div class="container">
+        <div class="row">
+          <div class="col">
+            <h4>Statistics</h4>
+            <div class="scroll">
+              
+              <br>
+      <table class="table table-hover  " >
+        <thead>
+          <tr>
+            <th scope="col">Location</th>
+            <th scope="col">Confirmed</th>
+            <th scope="col">Cases per 1M people</th>
+            
+            <th scope="col">RECOVERED</th>
+            <th scope="col">DEATHS</th>
+           
+          </tr>
+        </thead>
+        <tbody>
+          {% for i in a %}
+          <tr class="pt-md-3 pt-3">
+            <td ><img src="https://www.countryflags.io/{{ i.new }}/shiny/24.png">  {{ i.country }}</td>
+						<td > {{ i.total }}</td>
+						<td >{{ i.active }}</td>
+												
+												<td>{{ i.recovered }}</td>
+                        <td>{{ i.deaths }}</td>
+                       
+											</tr>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    </div>
+    </div>
+    </div>
+    
+   <br><br><br><br>
+    <div class="container" class="bg-dark">
+      <div class="row" class="bg-dark">
+          <div class="col-6" class="bg-dark">
+            <canvas id="my" height="200px"></canvas>
+            <script>
+            var ctx = document.getElementById('my').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: [{% for i in b %}"{{ i.country }}",{% endfor %}],
+                    datasets: [{
+                        label: 'Total Confirmed Case',
+                        data: [{% for i in b %}"{{ i.total }}",{% endfor %}],
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.2)',
+                            'rgba(54, 162, 235, 0.2)',
+                            'rgba(255, 206, 86, 0.2)',
+                            'rgba(75, 192, 192, 0.2)',
+                            'rgba(153, 102, 255, 0.2)',
+                            'rgba(255, 159, 64, 0.2)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)',
+                            'rgba(255, 159, 64, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    }
+                }
+            });
+            </script>
+</div>
+<div></div>
+<div class="col-6" class="bg-dark"> 
+  <canvas id="myChart" height="200px"></canvas>
+  <script>
+  var ctx = document.getElementById('myChart').getContext('2d');
+  var myChart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+          labels: [{% for i in b %}"{{ i.country }}",{% endfor %}],
+          datasets: [{
+              label: 'Todays cases',
+              data: [{% for i in b %}"{{ i.new }}",{% endfor %}],
+              backgroundColor: [
+                  'rgba(255, 99, 132, 0.2)',
+                  'rgba(54, 162, 235, 0.2)',
+                  'rgba(255, 206, 86, 0.2)',
+                  'rgba(75, 192, 192, 0.2)',
+                  'rgba(153, 102, 255, 0.2)',
+                  'rgba(255, 159, 64, 0.2)'
+              ],
+              borderColor: [
+                  'rgba(255, 99, 132, 1)',
+                  'rgba(54, 162, 235, 1)',
+                  'rgba(255, 206, 86, 1)',
+                  'rgba(75, 192, 192, 1)',
+                  'rgba(153, 102, 255, 1)',
+                  'rgba(255, 159, 64, 1)'
+              ],
+              borderWidth: 1
+          }]
+      },
+      options: {
+          scales: {
+              yAxes: [{
+                  ticks: {
+                      beginAtZero: true
+                  }
+              }]
+          }
+      }
+  });
+  </script>
+</div>
+</div>
+</div>
+
+        </div>
+       </div>
+</body>
+
+</html>
